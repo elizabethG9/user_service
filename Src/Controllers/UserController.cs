@@ -42,20 +42,27 @@ namespace user_service.Src.Controllers
         {
             var user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == loginDto.Email);
 
-            if(user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
+            if(user == null)
             {
-                return BadRequest("Credenciales incorrectas");
+                return BadRequest("Usuario inexistente, contacte a un administrador");
             }
             if(user.Role.Name == "Estudiante")
             {
                 return BadRequest("Los estudiantes no pueden iniciar sesión");
             }
 
+            if(!BCrypt.Net.BCrypt.Verify(loginDto.Password, user.Password))
+            {
+                return BadRequest("Credenciales incorrectas");
+            }
+            
+
             var response = new UserDto
             {
                 Id = user.Id,
                 Name = user.Name,
                 LastName = user.LastName,
+                Email = user.Email,
                 Role = user.Role.Name
             };
 
