@@ -139,6 +139,8 @@ namespace user_service.Src.Controllers
                 LastName = createUserDto.LastName,
                 Email = createUserDto.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(createUserDto.Name),
+                Role = docentRole
+                    
             };
             _context.Users.Add(newDocent);
             await _context.SaveChangesAsync();
@@ -177,10 +179,6 @@ namespace user_service.Src.Controllers
             user.LastName = string.IsNullOrWhiteSpace(updateUserDto.LastName) ? user.LastName : updateUserDto.LastName;
             user.Email = string.IsNullOrWhiteSpace(updateUserDto.Email) ? user.Email : updateUserDto.Email;
 
-            if (user.Role == null){
-                user.Role = new Role{Id = 3, Name = "Estudiante"};
-            }
-
             await _context.SaveChangesAsync();
 
             var response = new UserDto
@@ -216,9 +214,6 @@ namespace user_service.Src.Controllers
             user.LastName = string.IsNullOrWhiteSpace(updateUserDto.LastName) ? user.LastName : updateUserDto.LastName;
             user.Email = string.IsNullOrWhiteSpace(updateUserDto.Email) ? user.Email : updateUserDto.Email;
 
-            if (user.Role == null){
-                user.Role = new Role{Id = 2, Name = "Docente"};
-            }
             await _context.SaveChangesAsync();
 
             var response = new UserDto
