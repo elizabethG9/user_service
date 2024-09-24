@@ -235,24 +235,7 @@ namespace user_service.Src.Controllers
             };
             return Ok(response);
         }
-        [HttpGet("GetRoles")]
-        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
-        {
-            var roles = await _context.Roles.ToListAsync();
-            return Ok(roles);
-        }
-        [HttpDelete("DeleteRole/{id}")]
-        public async Task<ActionResult> DeleteRole(int id){
-            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Id == id);
-            if (role == null)
-            {
-                return NotFound("El rol no existe");
-            }
-            _context.Roles.Remove(role);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-
+        
         //Función para obtener los estudiantes
         [Authorize(Roles = "Admin, Docente")]
         [HttpGet("GetStudents")]
