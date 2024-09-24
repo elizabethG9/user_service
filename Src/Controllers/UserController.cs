@@ -58,9 +58,8 @@ namespace user_service.Src.Controllers
                 LastName = user.LastName,
                 Role = user.Role.Name
             };
-            var token = GenerateToken(user);
 
-            return Ok(new{response, token});
+            return Ok(response);
         }
         
         /// <summary>
@@ -110,8 +109,7 @@ namespace user_service.Src.Controllers
                 Role = newStudent.Role.Name
             };
 
-            var jwt = GenerateToken(newStudent);
-            return Ok(new{response, jwt});
+            return Ok(response);
 
         }
 
@@ -153,13 +151,11 @@ namespace user_service.Src.Controllers
                 Email = newDocent.Email,
                 Role = newDocent.Role.Name
             };
-            var jwt = GenerateToken(newDocent);
-            return Ok(new{response, jwt});
+            return Ok(response);
 
         }
 
         //Función para actualizar un estudiante
-        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateStudent/{id}")]
         public async Task<ActionResult<User>> UpdateStudent(Guid id, UpdateUserDto updateUserDto)
         {
@@ -198,7 +194,6 @@ namespace user_service.Src.Controllers
         }
     
         //Función para actualizar un docente
-        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateDocent/{id}")]
         public async Task<ActionResult<User>> UpdateDocent(Guid id, UpdateUserDto updateUserDto)
         {
@@ -237,7 +232,6 @@ namespace user_service.Src.Controllers
         }
         
         //Función para obtener los estudiantes
-        [Authorize(Roles = "Admin, Docente")]
         [HttpGet("GetStudents")]
         public async Task<ActionResult<IEnumerable<User>>> GetStudent(Guid id)
         {
@@ -250,7 +244,6 @@ namespace user_service.Src.Controllers
         }
 
         //Función para obtener los docentes
-        [Authorize(Roles = "Admin, Docente")]
         [HttpGet("GetDocents")]
         public async Task<ActionResult<User>> GetDocent(Guid id)
         {
@@ -262,30 +255,6 @@ namespace user_service.Src.Controllers
             return Ok(docents);
         }
     
-        
-        //Función para generar el token
-        public string GenerateToken(User user)
-        {
-
-            var claims = new List<Claim>
-            {
-                new ("Id", user.Id.ToString()),
-                new ("Email", user.Email),
-                new (ClaimTypes.Role, user.Role.Name)
-            };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                    _configuration.GetSection("AppSettings:Token").Value!));
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddHours(2),
-                signingCredentials: creds
-            );
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
-        }
         
         //Función para validar el correo
         public bool ValidEmail (string email)
