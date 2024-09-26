@@ -232,6 +232,22 @@ namespace user_service.Src.Controllers
             };
             return Ok(response);
         }
+
+        [HttpGet("CheckStudent/{email}")]
+        public async Task<bool> CheckStudent(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Role.Name == "Estudiante");
+            if (user == null)
+            {
+                return false;
+            }
+            if(user.Role.Name == "Docente")
+            {
+                return false;
+            }
+
+            return true;
+        }
         
         //Función para obtener los estudiantes
         [HttpGet("GetStudents")]
