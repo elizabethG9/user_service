@@ -233,15 +233,15 @@ namespace user_service.Src.Controllers
             return Ok(response);
         }
 
-        [HttpGet("CheckStudent/{email}")]
-        public async Task<bool> CheckStudent(string email)
+        [HttpGet("CheckStudent/{id}")]
+        public async Task<bool> CheckStudent(Guid id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.Role.Name == "Estudiante");
+            var user = await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Id == id );
             if (user == null)
             {
                 return false;
             }
-            if(user.Role.Name == "Docente")
+            if(user.Role.Name != "Estudiante")
             {
                 return false;
             }
