@@ -85,7 +85,7 @@ namespace user_service.Src.Controllers
             {
                 return BadRequest("El estudiante ya existe");
             }
-            if(!ValidEmail(createUserDto.Email))
+            if(!ValidEmailStudent(createUserDto.Email) || ValidEmailDocent(createUserDto.Email))
             {
                 return BadRequest("El correo ingresado no es válido");
             }
@@ -129,7 +129,7 @@ namespace user_service.Src.Controllers
             {
                 return BadRequest("El docente ya existe");
             }
-            if(!ValidEmail(createUserDto.Email))
+            if(!ValidEmailDocent(createUserDto.Email) || ValidEmailStudent(createUserDto.Email))
             {   
                 return BadRequest("El correo ingresado no es válido");
             }
@@ -173,7 +173,7 @@ namespace user_service.Src.Controllers
             {
                 return NotFound("El estudiante no existe");
             }
-            if(!ValidEmail(user.Email))
+            if(!ValidEmailStudent(user.Email))
             {
                 return BadRequest("El correo no es válido");
             }
@@ -208,7 +208,7 @@ namespace user_service.Src.Controllers
                 return NotFound("El docente no existe");
             }
 
-            if(!ValidEmail(user.Email))
+            if(!ValidEmailDocent(user.Email))
             {
                 return BadRequest("El correo no es válido");
             }
@@ -272,13 +272,18 @@ namespace user_service.Src.Controllers
 
             return Ok(docents);
         }
-    
         
         //Función para validar el correo
-        public bool ValidEmail (string email)
+        public bool ValidEmailStudent (string email)
         {
-            return Regex.IsMatch(email,@"^[^@]+@ucn\.cl$",RegexOptions.IgnoreCase);
+            return Regex.IsMatch(email,@"^[^@]+@alumnos\.ucn\.cl$",RegexOptions.IgnoreCase);
         }
+
+        public bool ValidEmailDocent (string email)
+        {
+            return Regex.IsMatch(email,@"^[^@]+@(ucn\.cl|ce\.ucn\.cl)$",RegexOptions.IgnoreCase);
+        }
+
 
     }
 }
