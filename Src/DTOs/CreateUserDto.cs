@@ -10,11 +10,10 @@ namespace user_service.Src.DTOs
     {
        
         [Required(ErrorMessage = "El nombre es requerido")] 
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Los apellidos deben contener solo letras")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$", ErrorMessage = "El nombre debe contener solo letras")]
         public string Name { get; set; } = string.Empty;
         [Required(ErrorMessage = "El apellido es requerido")]
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Los apellidos deben contener solo letras")]
-        public string LastName { get; set; } = string.Empty;
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$", ErrorMessage = "Los apellidos deben contener solo letras")]        public string LastName { get; set; } = string.Empty;
         [Required(ErrorMessage = "El email es requerido")]
         public string Email { get; set; } = string.Empty;
     }

@@ -8,10 +8,10 @@ namespace user_service.Src.DTOs
 {
     public class UpdateUserDto
     {
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "El nombre debe contener solo letras")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$", ErrorMessage = "El nombre debe contener solo letras")]
         public string Name { get; set; } = string.Empty;
 
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Los apellidos deben contener solo letras")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$", ErrorMessage = "Los apellidos deben contener solo letras")]
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
     }
